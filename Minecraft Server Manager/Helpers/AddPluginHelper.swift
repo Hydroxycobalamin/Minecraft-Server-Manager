@@ -18,6 +18,7 @@ class AddPluginHelper {
         }
 
         var newPlugin = Plugin(name: name, build: nil, path: nil, origin: origin)
+
         guard let downloadUrl = origin.getUrl(for: newPlugin) else {
             // TODO: ErrorHandling
             return
@@ -45,13 +46,11 @@ class AddPluginHelper {
             return
         }
 
-
         let jarFileName = jarFilePath.lastPathComponent
-        let pluginDestination = ConfigurationManager.shared.downloadDir.appendingPathComponent(jarFileName)
+        let pluginDestination = ConfigurationManager.shared.pluginDir.appendingPathComponent(jarFileName)
         let moveResult = PersistentManager.shared.moveItem(
             from: jarFilePath,
-            to: pluginDestination,
-            pluginName: name
+            to: pluginDestination
         )
         if moveResult != .success {
             // TODO: ErrorHandling

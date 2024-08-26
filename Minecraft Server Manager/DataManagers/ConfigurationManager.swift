@@ -7,4 +7,5 @@ final class ConfigurationManager {
     lazy var downloadDir = workingFolder.appendingPathComponent("downloads")
     lazy var dataFile = workingFolder.appendingPathComponent("data/data.json")
     lazy var worldDir = workingFolder.appendingPathComponent("worlds")
+    lazy var pluginDir = workingFolder.appendingPathComponent("plugins")
 }

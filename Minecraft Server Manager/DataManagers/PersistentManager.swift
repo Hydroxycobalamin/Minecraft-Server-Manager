@@ -65,18 +65,41 @@ final class PersistentManager {
         return jarFile
     }
 
-    func moveItem(from sourcePath: URL, to destinationPath: URL, pluginName: String) -> MoveResult {
-        do {
-            if fileManager.fileExists(atPath: destinationPath.path) {
-                print("File already exists. No update required.")
+    func moveItem(from sourcePath: URL, to destinationPath: URL) -> MoveResult {
+        // Checks if the file exists on the destination.
+        if fileManager.fileExists(atPath: destinationPath.path) {
+            print("File already exists. Can not copy to destination: \(destinationPath)")
+            return .failed
+        }
+        // Checks if the folder structure exists, otherwise it will create it.
+        var destinationPathFolder = deleteLastPathComponent(from: destinationPath)
+        if !fileManager.fileExists(atPath: destinationPathFolder.path) {
+            let status = createFolderPath(at: destinationPathFolder)
+            if status == .failed {
                 return .failed
-            } else {
-                try fileManager.moveItem(at: sourcePath, to: destinationPath)
-                print("Moved: \(pluginName) to \(destinationPath)")
-                return .success
             }
+        }
+        // Try to move the file or folder.
+        do {
+            try fileManager.moveItem(at: sourcePath, to: destinationPath)
+            print("Moved: \(sourcePath) to \(destinationPath)")
+            return .success
         } catch {
             print("Error while moving the file." + error.localizedDescription)
+            return .failed
+        }
+    }
+
+    func deleteLastPathComponent(from path: URL) -> URL {
+        return path.deletingLastPathComponent()
+    }
+
+    func createFolderPath(at path: URL) -> MoveResult {
+        do {
+            try fileManager.createDirectory(at: path, withIntermediateDirectories: true)
+            return .success
+        } catch {
+            print("Error while creating directory" + error.localizedDescription)
             return .failed
         }
     }

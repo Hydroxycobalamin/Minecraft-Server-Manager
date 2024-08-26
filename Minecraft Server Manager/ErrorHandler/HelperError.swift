@@ -6,6 +6,7 @@ enum HelperError: Error {
     case objectAlreadyExist(objectType: String, path: String)
     case urlInvalidCharacters(path: String)
     case invalidOrigin(origin: String)
+    case invalidWorld(path: String)
 }
 
 extension HelperError: CustomStringConvertible {
@@ -21,6 +22,8 @@ extension HelperError: CustomStringConvertible {
             return "Path: '\(path)' contains invalid characters."
         case .invalidOrigin(let origin):
             return "Origin: '\(origin)' is not valid."
+        case .invalidWorld(let path):
+            return "'level.dat' could not be found. Are you sure '\(path)' is a valid world?"
         }
     }
 }

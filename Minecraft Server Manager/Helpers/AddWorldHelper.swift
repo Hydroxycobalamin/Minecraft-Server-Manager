@@ -7,19 +7,22 @@ class AddWorldHelper {
             return
         }
 
-        guard let worldUrl = URL(string: worldPath) else {
-            print("Could not create filePath from provided path:\(worldPath)")
+        let worldUrl = URL(fileURLWithPath: sanitizePath(from: worldPath))
+
+        // Check if folder is a minecraft world.
+        if !PersistentManager.shared.fileManager.fileExists(atPath: worldUrl.appendingPathComponent("level.dat").path) {
+            print(HelperError.invalidWorld(path: worldPath))
             return
         }
-        
-        if !PersistentManager.shared.fileManager.fileExists(atPath: worldUrl.appendingPathComponent("level.dat").path) {
-            // TODO: ErrorHandling
+
+        let destinationDirectory = ConfigurationManager.shared.worldDir.appendingPathComponent(version.replacingOccurrences(of: ".", with: ""))
+        if PersistentManager.shared.moveItem(from: worldUrl, to: destinationDirectory.appendingPathComponent(worldUrl.lastPathComponent)) != .success {
             return
         }
 
         if let worlds = AppDataManager.shared.masterData?.worlds,
            worlds.contains(where: {$0.worldPath == worldUrl}) {
-            print("This world was already added.")
+            print(HelperError.objectAlreadyExist(objectType: "World", path: worldUrl.lastPathComponent))
             return
         }
 

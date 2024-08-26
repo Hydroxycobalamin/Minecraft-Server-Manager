@@ -18,3 +18,7 @@ func extractBuildNumber(from filename: String) -> Int? {
     }
     return nil
 }
+
+func sanitizePath(from path: String) -> String {
+    return path.replacingOccurrences(of: "\\ ", with: " ")
+}

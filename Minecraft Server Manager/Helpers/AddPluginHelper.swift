@@ -11,33 +11,27 @@ class AddPluginHelper {
             // TODO: ErrorHandling
             return
         }
-
         guard let origin = OriginType(rawValue: origin) else {
             print(HelperError.invalidOrigin(origin: origin))
             return
         }
-
-        var newPlugin = Plugin(name: name, build: nil, path: nil, origin: origin)
+        let newPlugin = Plugin(name: name, build: nil, path: nil, origin: origin)
 
         guard let downloadUrl = origin.getUrl(for: newPlugin) else {
             // TODO: ErrorHandling
             return
         }
-
-
         let downloadResult = APIHelper().download(from: origin, with: downloadUrl, pluginName: name)
         if downloadResult != .success {
             // TODO: ErrorHandling
             return
         }
 
-
         let unzipResult = PersistentManager.shared.unzipFile(to: name)
         if unzipResult != .success {
             // TODO: ErrorHandling
             return
         }
-
 
         guard let jarFilePath = PersistentManager.shared.findJarFiles(
             in: ConfigurationManager.shared.downloadDir.appendingPathComponent(name)

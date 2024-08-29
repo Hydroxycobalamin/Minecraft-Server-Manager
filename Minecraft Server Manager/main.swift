@@ -38,6 +38,10 @@ if let input = readLine() {
             if arguments.count == 3 {
                 AddWorldHelper().addWorld(version: String(arguments[1]), worldPath: String(arguments[2]))
             }
+        case .addworldtoserver:
+            if arguments.count == 3 {
+                SymlinkHelper().addWorldToServer(serverName: String(arguments[1]), version: String(arguments[2]))
+            }
         case .update:
             print("Update started")
         //TODO: Update Handling

@@ -46,6 +46,10 @@ final class AppDataManager {
         return masterData?.servers.first(where: { $0.name == serverName })
     }
 
+    func getServerFromMasterData(serverPath: String) -> Server? {
+        return masterData?.servers.first(where: { $0.serverPath.path == serverPath })
+    }
+
     func getWorldsFromMasterData(version: String) -> [World]? {
         return masterData?.worlds.filter({ $0.version == version})
     }

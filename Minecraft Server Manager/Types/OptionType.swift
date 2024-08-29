@@ -6,6 +6,7 @@ enum OptionType: String, CaseIterable {
     case addplugin
     case addworld
     case addplugintoserver
+    case addworldtoserver
 
     func getDescription(for job: OptionType) -> String {
         switch self {
@@ -19,6 +20,8 @@ enum OptionType: String, CaseIterable {
             return "Type 'addworld' to add a world."
         case .addplugintoserver:
             return "Type 'addplugintoserver' to add a plugin to a server."
+        case .addworldtoserver:
+            return "Type 'addworldtoserver' to add worlds to a server."
         }
     }
 }
